@@ -1,1 +1,2 @@
-# qa_sdet_otus
+# QA SDET Otus learning
+
