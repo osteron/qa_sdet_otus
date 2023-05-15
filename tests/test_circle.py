@@ -22,10 +22,10 @@ def test_circle_creation_negative(radius):
         Circle(radius)
 
 
-def test_two_circle_areas_sum():
-    circle_1 = Circle(5)
-    circle_2 = Circle(2.5)
-    expected_sum = 98.17
+@pytest.mark.parametrize('radius_1, radius_2, expected_sum', [(5, 2.5, 98.17)])
+def test_two_circle_areas_sum(radius_1, radius_2, expected_sum):
+    circle_1 = Circle(radius_1)
+    circle_2 = Circle(radius_2)
     assert circle_1.add_area(circle_2) == expected_sum, f'Expected sum is {expected_sum}'
 
 

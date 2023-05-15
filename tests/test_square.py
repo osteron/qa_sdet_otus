@@ -21,10 +21,10 @@ def test_square_creation_negative(side_a):
         Square(side_a)
 
 
-def test_two_square_areas_sum():
-    square_1 = Square(5)
-    square_2 = Square(1.5)
-    expected_sum = 27.25
+@pytest.mark.parametrize('side_a_1, side_a_2, expected_sum', [(5, 1.5, 27.25)])
+def test_two_square_areas_sum(side_a_1, side_a_2, expected_sum):
+    square_1 = Square(side_a_1)
+    square_2 = Square(side_a_2)
     assert square_1.add_area(square_2) == expected_sum, f'Expected sum is {expected_sum}'
 
 

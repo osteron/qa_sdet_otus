@@ -33,10 +33,11 @@ def test_triangle_creation_negative(side_a, side_b, side_c):
         Triangle(side_a, side_b, side_c)
 
 
-def test_two_triangle_areas_sum():
-    triangle_1 = Triangle(10, 6, 12)
-    triangle_2 = Triangle(5, 4, 6)
-    expected_sum = 39.8
+@pytest.mark.parametrize('side_a_1, side_b_1, side_c_1, side_a_2, side_b_2, side_c_2, expected_sum',
+                         [(10, 6, 12, 5, 4, 6, 39.8)])
+def test_two_triangle_areas_sum(side_a_1, side_b_1, side_c_1, side_a_2, side_b_2, side_c_2, expected_sum):
+    triangle_1 = Triangle(side_a_1, side_b_1, side_c_1)
+    triangle_2 = Triangle(side_a_2, side_b_2, side_c_2)
     assert triangle_1.add_area(triangle_2) == expected_sum, f'Expected sum is {expected_sum}'
 
 

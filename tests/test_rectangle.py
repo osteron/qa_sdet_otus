@@ -21,10 +21,10 @@ def test_rectangle_create_negative(side_a, side_b):
         Rectangle(side_a, side_b)
 
 
-def test_two_rectangle_areas_sum():
-    rectangle_1 = Rectangle(2, 4)
-    rectangle_2 = Rectangle(3, 6)
-    expected_sum = 26
+@pytest.mark.parametrize('side_a_1, side_b_1, side_a_2, side_b_2, expected_sum', [(2, 4, 3, 6, 26)])
+def test_two_rectangle_areas_sum(side_a_1, side_b_1, side_a_2, side_b_2, expected_sum):
+    rectangle_1 = Rectangle(side_a_1, side_b_1)
+    rectangle_2 = Rectangle(side_a_2, side_b_2)
     assert rectangle_1.add_area(rectangle_2) == expected_sum, f'Expected sum is {expected_sum}'
 
 
