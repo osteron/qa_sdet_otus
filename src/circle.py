@@ -1,4 +1,4 @@
-from figure import Figure
+from src.figure import Figure
 from math import pi
 
 

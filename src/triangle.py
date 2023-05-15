@@ -1,4 +1,4 @@
-from figure import Figure
+from src.figure import Figure
 
 
 class Triangle(Figure):
@@ -14,11 +14,11 @@ class Triangle(Figure):
         half_meter = self.perimeter / 2
         area = \
             (half_meter * (half_meter - self.side_a) * (half_meter - self.side_b) * (half_meter - self.side_c)) ** 0.5
-        return round(area, 2)
+        return round(area, 1)
 
     @property
     def perimeter(self) -> float:
-        return self.side_a + self.side_b + self.side_c
+        return round(self.side_a + self.side_b + self.side_c, 1)
 
     @staticmethod
     def check_if_can_create_triangle(side_a: float, side_b: float, side_c: float):
