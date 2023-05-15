@@ -26,8 +26,3 @@ class Triangle(Figure):
 
         if not (a + b > c and a + c > b and c + b > a):
             raise ValueError(f'Unable to create a triangle with sides: {a}, {b}, {c}')
-
-
-b = Triangle(5, 2, 6)
-print(b.area)
-print(b.perimeter)

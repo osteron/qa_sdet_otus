@@ -18,6 +18,6 @@ class Circle(Figure):
 
     @staticmethod
     def check_if_can_create_circle(radius):
-        if not (radius > 0):
+        if radius <= 0:
             raise ValueError(f'Radius must be greater than 0. Got: {radius}')
 
