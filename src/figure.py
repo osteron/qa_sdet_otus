@@ -3,8 +3,8 @@ class Figure:
         self.name = name
 
     @property
-    def area(self):
-        pass
+    def area(self) -> None:
+        return None
 
     def add_area(self, figure: object) -> float:
         if isinstance(figure, Figure):
