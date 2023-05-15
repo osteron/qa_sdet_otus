@@ -1,4 +1,4 @@
-# QA SDET Otus learning <hr>
+# QA SDET Otus learning
 ## How to run the tests:
 
 1. Use PyCharm standard run approach.
