@@ -6,7 +6,7 @@ class Circle(Figure):
     def __init__(self, radius: float):
         super().__init__('Circle')
         self.radius = radius
-        self.check_if_can_create_circle(radius)
+        self.check_radius_greater_than_zero(radius)
 
     @property
     def area(self) -> float:
@@ -17,7 +17,7 @@ class Circle(Figure):
         return round(2 * pi * self.radius, 2)
 
     @staticmethod
-    def check_if_can_create_circle(radius):
+    def check_radius_greater_than_zero(radius):
         if radius <= 0:
             raise ValueError(f'Radius must be greater than 0. Got: {radius}')
 
