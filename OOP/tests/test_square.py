@@ -1,5 +1,5 @@
 import pytest
-from src.square import Square
+from OOP.src.square import Square
 
 
 class TestPositive:

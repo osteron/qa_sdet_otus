@@ -1,5 +1,5 @@
 import pytest
-from src.circle import Circle
+from OOP.src.circle import Circle
 
 
 class TestPositive:
