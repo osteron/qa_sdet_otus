@@ -1,5 +1,5 @@
 import pytest
-from src.triangle import Triangle
+from OOP.src.triangle import Triangle
 
 
 class TestPositive:

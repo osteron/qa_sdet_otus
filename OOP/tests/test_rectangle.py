@@ -1,5 +1,5 @@
 import pytest
-from src.rectangle import Rectangle
+from OOP.src.rectangle import Rectangle
 
 
 class TestPositive:
