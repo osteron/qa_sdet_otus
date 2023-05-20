@@ -1,3 +1,4 @@
+import itertools
 from csv import DictReader
 import json
 from working_with_test_data.files import USERS_FILE, BOOKS_FILE
@@ -15,8 +16,8 @@ with open(USERS_FILE, 'r') as json_file, open(BOOKS_FILE, newline='') as csv_fil
                 'books': []
             }
         )
-    iter_result = iter(result)
-    for book in list(DictReader(csv_file)):
+    iter_result = itertools.cycle(result)
+    for book in DictReader(csv_file):
         try:
             person = next(iter_result)
             person['books'].append(
@@ -28,7 +29,9 @@ with open(USERS_FILE, 'r') as json_file, open(BOOKS_FILE, newline='') as csv_fil
                 }
             )
         except StopIteration:
-            iter_result = iter(result)
+            iter_result = itertools.cycle(result)
+
+assert sum([len(res.get('books')) for res in result]) == 211  # 211 books in the file
 
 with open('../files/result.json', 'w') as result_file:
     result_file.write(json.dumps(result, indent=4))
