@@ -18,18 +18,15 @@ with open(USERS_FILE, 'r') as json_file, open(BOOKS_FILE, newline='') as csv_fil
         )
     iter_result = itertools.cycle(result)
     for book in DictReader(csv_file):
-        try:
-            person = next(iter_result)
-            person['books'].append(
-                {
-                    'title': book['Title'],
-                    'author': book['Author'],
-                    'pages': book['Pages'],
-                    'genre': book['Genre']
-                }
-            )
-        except StopIteration:
-            iter_result = itertools.cycle(result)
+        person = next(iter_result)
+        person['books'].append(
+            {
+                'title': book['Title'],
+                'author': book['Author'],
+                'pages': book['Pages'],
+                'genre': book['Genre']
+            }
+        )
 
 assert sum([len(res.get('books')) for res in result]) == 211  # 211 books in the file
 
