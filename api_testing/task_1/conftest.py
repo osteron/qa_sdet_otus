@@ -17,5 +17,15 @@ def by_breed_url():
 
 
 @pytest.fixture(scope='function')
-def list_all_breeds():
+def list_all_breeds_url():
     return 'breeds/list/all'
+
+
+@pytest.fixture(scope='function')
+def random_image_from_breed_url():
+    return 'breed/hound/images/random'
+
+
+@pytest.fixture(scope='function')
+def multiple_images_from_breed_url():
+    return 'breed/hound/images/random/'
