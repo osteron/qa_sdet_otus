@@ -3,9 +3,16 @@ import requests
 from pydantic import BaseModel, Field
 
 POST_CREATING_RESOURCE = {
-        'title': 'foo',
-        'body': 'bar',
-        'userId': 1,
+    'title': 'foo',
+    'body': 'bar',
+    'userId': 1,
+}
+
+PUT_UPDATING_RESOURCE = {
+    'id': 1,
+    'title': 'some_title',
+    'body': 'some_body',
+    'userId': 1,
 }
 
 
@@ -31,7 +38,25 @@ class TestPositive:
         assert len(result) == len(data)
 
     @pytest.mark.smoke
-    @pytest.mark.parametrize('data', [POST_CREATING_RESOURCE])
-    def test_creating_course(self, data: object) -> None:
+    @pytest.mark.parametrize('data', [POST_CREATING_RESOURCE], ids=['creating resourse'])
+    def test_creating_resourse(self, data: dict) -> None:
         resource = Resource.parse_obj(requests.post('https://jsonplaceholder.typicode.com/posts', json=data).json())
         assert resource.id == 101
+
+    @pytest.mark.smoke
+    @pytest.mark.parametrize('data', [PUT_UPDATING_RESOURCE], ids=['updating resourse'])
+    def test_updating_resource(self, data: dict) -> None:
+        resource = Resource.parse_obj(requests.put('https://jsonplaceholder.typicode.com/posts/1', json=data).json())
+        assert resource.id == 1
+        assert resource.title == 'some_title'
+        assert resource.body == 'some_body'
+        assert resource.user_id == 1
+
+    @pytest.mark.smoke
+    @pytest.mark.parametrize('data, result', [({'title': 'qwerty'}, 'qwerty'), ({'title': '!@#%$^'}, '!@#%$^')],
+                             ids=['string title', 'symbolic title'])
+    def test_patching_resource(self, data: dict, result: str) -> None:
+        resource = Resource.parse_obj(requests.patch('https://jsonplaceholder.typicode.com/posts/1', json=data).json())
+        assert resource.title in result
+
+
