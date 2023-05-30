@@ -1,6 +1,6 @@
 import pytest
 import requests
-from pydantic import BaseModel, ValidationError, Field
+from pydantic import BaseModel, Field
 
 POST_CREATING_RESOURCE = {
         'title': 'foo',
@@ -16,10 +16,6 @@ class Resource(BaseModel):
     body: str
 
 
-class ResourceList(BaseModel):
-    resource_list: dict[Resource]
-
-
 class TestPositive:
 
     @pytest.mark.smoke
@@ -30,8 +26,9 @@ class TestPositive:
 
     @pytest.mark.smoke
     def test_get_all_resources(self) -> None:
-        resource = ResourceList.parse_obj(requests.get('https://jsonplaceholder.typicode.com/posts').json())
-        print(resource)
+        data = requests.get('https://jsonplaceholder.typicode.com/posts').json()
+        result = [Resource.parse_obj(item) for item in data]
+        assert len(result) == len(data)
 
     @pytest.mark.smoke
     @pytest.mark.parametrize('data', [POST_CREATING_RESOURCE])
