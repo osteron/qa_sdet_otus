@@ -15,7 +15,7 @@ def json_return(url: str):
     return requests.get(url).json()
 
 
-class TestPositive:
+class TestDogsApi:
 
     @pytest.mark.smoke
     @pytest.mark.parametrize('extension, status', [('.jpg', 'success')], ids=['extension .jpg and status "success"'])
