@@ -2,7 +2,7 @@ import json
 import pytest
 import requests
 from .urls import Url
-from .models import GetResponseDogModel, GetResponseListDogModel, GetResponseListBreedsModel, Message
+from .models import GetResponseDogModel, GetResponseListDogModel, GetResponseListBreedsModel
 
 
 def check_status_code(response: requests, status_code: int) -> None:
