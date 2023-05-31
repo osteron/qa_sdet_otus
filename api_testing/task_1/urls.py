@@ -1,4 +1,4 @@
-class Urls:
+class Url:
     BASE_URL = 'https://dog.ceo/api/'
     RANDOM_IMAGE_URL = BASE_URL + 'breeds/image/random/'
     BY_BREED_URL = BASE_URL + 'breed/hound/images'
