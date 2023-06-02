@@ -85,7 +85,6 @@ class TestDogsApi:
         check_status_code(response, 200)
         response_json = validate_json(response)
         dog_list = GetResponseListBreedsModel(**response_json)
-        print(dog_list.message)
         assert len(list(dog_list.message)) == 98
 
     @pytest.mark.smoke
