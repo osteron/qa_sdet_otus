@@ -3,18 +3,7 @@ import pytest
 import requests
 from .urls import Url
 from .models import GetResponseDogModel, GetResponseListDogModel, GetResponseListBreedsModel
-
-
-def check_status_code(response: requests, status_code: int) -> None:
-    assert response.status_code == 200, f'Статус код должен быть {status_code}'
-
-
-def validate_json(response: requests) -> json:
-    try:
-        response_json = json.loads(response.content)
-        return response_json
-    except ValueError as e:
-        print("JSON невалидный. Ошибка: ", e)
+from ..api_functions import validate_json, check_status_code
 
 
 class TestDogsApi:
@@ -35,7 +24,7 @@ class TestDogsApi:
         GetResponseDogModel(**response_json)
 
     @pytest.mark.smoke
-    @pytest.mark.parametrize('count_image', ['1', '25', '49', '50'])
+    @pytest.mark.parametrize('count_image', [1, 25, 49, 50])
     def test_get_multiply_random_image(self, count_image: int):
         """
         Тест проверяет запрос на получение нескольких случайных фотографий собак.
