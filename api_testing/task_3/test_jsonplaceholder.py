@@ -1,7 +1,6 @@
 import pytest
 import requests
-from pydantic import BaseModel, Field
-from typing import List
+from .models import GetResponseResourceModel, GetResponseResourceListModel
 from .urls import Urls
 from ..api_functions import validate_json, check_status_code
 
@@ -19,18 +18,7 @@ PUT_UPDATING_RESOURCE = {
 }
 
 
-class GetResponseResourceModel(BaseModel):
-    user_id: int = Field(alias='userId')
-    id: int
-    title: str
-    body: str
-
-
-class ResourceList(BaseModel):
-    __root__: List[GetResponseResourceModel]
-
-
-class TestPositive:
+class TestResourceApi:
 
     @pytest.mark.smoke
     @pytest.mark.parametrize('resourse_id', [1, 5, 10])
@@ -46,7 +34,7 @@ class TestPositive:
         response = requests.get(Urls.BASE_URL)
         check_status_code(response, 200)
         response_json = validate_json(response)
-        all_resources = ResourceList(__root__=response_json)
+        all_resources = GetResponseResourceListModel(__root__=response_json)
         assert len(all_resources.__root__) == 100
 
     @pytest.mark.smoke
