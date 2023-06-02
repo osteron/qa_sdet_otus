@@ -47,7 +47,7 @@ class TestBreweryApi:
     @pytest.mark.smoke
     @pytest.mark.parametrize('params, count_brewery', [('size=3', 3), ('size=10', 10), ('', 1), ('size=50', 50)])
     def test_get_random_brewery_with_size(self, params: str, count_brewery: int) -> None:
-        response = requests.get(f'{Url.RANDOM_BREWERY_URL}', params=params)
+        response = requests.get(Url.RANDOM_BREWERY_URL, params=params)
         check_status_code(response, 200)
         response_json = validate_json(response)
         brewery_list = GetResponseListBreweryModel(__root__=response_json)
