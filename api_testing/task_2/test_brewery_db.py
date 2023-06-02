@@ -1,8 +1,8 @@
 import pytest
 import requests
-from ..api_functions import validate_json, check_status_code
 from .urls import Url
 from .models import GetResponseBreweryModel, GetResponseListBreweryModel
+from ..api_functions import validate_json, check_status_code
 
 
 class TestBreweryApi:
