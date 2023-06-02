@@ -1,6 +1,9 @@
 import pytest
 import requests
 from pydantic import BaseModel, Field
+from typing import List
+from .urls import Urls
+from ..api_functions import validate_json, check_status_code
 
 POST_CREATING_RESOURCE = {
     'title': 'foo',
@@ -16,62 +19,63 @@ PUT_UPDATING_RESOURCE = {
 }
 
 
-class Resource(BaseModel):
+class GetResponseResourceModel(BaseModel):
     user_id: int = Field(alias='userId')
     id: int
     title: str
     body: str
 
 
+class ResourceList(BaseModel):
+    __root__: List[GetResponseResourceModel]
+
+
 class TestPositive:
 
     @pytest.mark.smoke
-    @pytest.mark.parametrize('number', [1, 5, 10], ids=['id=1', 'id=5', 'id=10'])
-    def test_get_resource(self, number: int) -> None:
-        """
-        Запрос на получение информации о ресурсе.
-        """
-        resource = Resource.parse_obj(requests.get(f'https://jsonplaceholder.typicode.com/posts/{number}').json())
-        assert resource.id == number
+    @pytest.mark.parametrize('resourse_id', [1, 5, 10])
+    def test_get_resource(self, resourse_id: int) -> None:
+        response = requests.get(f'{Urls.BASE_URL}{resourse_id}')
+        check_status_code(response, 200)
+        response_json = validate_json(response)
+        resource = GetResponseResourceModel(**response_json)
+        assert resource.id == resourse_id
 
     @pytest.mark.smoke
     def test_get_all_resources(self) -> None:
-        """
-        Запрос на получение списка всех ресурсов.
-        """
-        data = requests.get('https://jsonplaceholder.typicode.com/posts').json()
-        result = [Resource.parse_obj(item) for item in data]
-        assert len(result) == len(data)
+        response = requests.get(Urls.BASE_URL)
+        check_status_code(response, 200)
+        response_json = validate_json(response)
+        all_resources = ResourceList(__root__=response_json)
+        assert len(all_resources.__root__) == 100
 
     @pytest.mark.smoke
-    @pytest.mark.parametrize('data', [POST_CREATING_RESOURCE], ids=['creating resourse'])
-    def test_creating_resourse(self, data: dict) -> None:
-        """
-        Запрос на создание ресурса.
-        """
-        resource = Resource.parse_obj(requests.post('https://jsonplaceholder.typicode.com/posts', json=data).json())
+    @pytest.mark.parametrize('post_data', [POST_CREATING_RESOURCE])
+    def test_post_creating_resourse(self, post_data: dict) -> None:
+        response = requests.post(Urls.BASE_URL, json=post_data)
+        check_status_code(response, 201)
+        response_json = validate_json(response)
+        resource = GetResponseResourceModel(**response_json)
         assert resource.id == 101
 
     @pytest.mark.smoke
-    @pytest.mark.parametrize('data', [PUT_UPDATING_RESOURCE], ids=['updating resourse'])
-    def test_updating_resource(self, data: dict) -> None:
-        """
-        Запрос на обновление информации о ресурсе.
-        """
-        resource = Resource.parse_obj(requests.put('https://jsonplaceholder.typicode.com/posts/1', json=data).json())
-        assert resource.id == 1
-        assert resource.title == 'some_title'
-        assert resource.body == 'some_body'
-        assert resource.user_id == 1
+    @pytest.mark.parametrize('put_data, resource_id', [(PUT_UPDATING_RESOURCE, 1)])
+    def test_put_updating_resource(self, put_data: dict, resource_id: int) -> None:
+        response = requests.put(f'{Urls.BASE_URL}{resource_id}', json=put_data)
+        check_status_code(response, 200)
+        response_json = validate_json(response)
+        assert response_json == PUT_UPDATING_RESOURCE
 
     @pytest.mark.smoke
-    @pytest.mark.parametrize('data, result', [({'title': 'qwerty'}, 'qwerty'), ({'title': '!@#%$^'}, '!@#%$^')],
+    @pytest.mark.parametrize('patch_data, resource_title, resource_id',
+                             [
+                                 ({'title': 'qwerty'}, 'qwerty', 1),
+                                 ({'title': '!@#%$^'}, '!@#%$^', 2)],
                              ids=['string title', 'symbolic title'])
-    def test_patching_resource(self, data: dict, result: str) -> None:
-        """
-        Запрос на частичное изменение информации о ресурсе.
-        """
-        resource = Resource.parse_obj(requests.patch('https://jsonplaceholder.typicode.com/posts/1', json=data).json())
-        assert resource.title in result
-
-
+    def test_patch_update_resource(self, patch_data: dict, resource_title: str, resource_id: int) -> None:
+        response = requests.patch(f'{Urls.BASE_URL}{resource_id}', json=patch_data)
+        check_status_code(response, 200)
+        response_json = validate_json(response)
+        resource = GetResponseResourceModel(**response_json)
+        assert resource.title in resource_title
+        assert resource.id == resource_id
