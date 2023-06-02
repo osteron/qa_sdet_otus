@@ -3,7 +3,7 @@ import requests
 
 
 def check_status_code(response: requests, status_code: int) -> None:
-    assert response.status_code == 200, f'Статус код должен быть {status_code}'
+    assert response.status_code == status_code, f'Статус код должен быть {status_code}'
 
 
 def validate_json(response: requests) -> json:
