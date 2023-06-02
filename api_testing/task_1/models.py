@@ -110,7 +110,7 @@ class GetResponseDogModel(BaseModel):
 
 
 class GetResponseListDogModel(BaseModel):
-    message: list[str]
+    message: List[str]
     status: str
 
 
