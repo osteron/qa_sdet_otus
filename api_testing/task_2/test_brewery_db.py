@@ -1,7 +1,7 @@
 import pytest
 import requests
 from .urls import Url
-from .models import GetResponseBreweryModel, GetResponseListBreweryModel
+from .models import GetResponseBreweryModel, GetResponseListBreweryModel, GetResponseListAutocompleteModel
 from ..api_functions import validate_json, check_status_code
 
 
@@ -50,3 +50,12 @@ class TestBreweryApi:
         response_json = validate_json(response)
         brewery_list = GetResponseListBreweryModel(__root__=response_json)
         assert len(brewery_list.__root__) == count_brewery
+
+    @pytest.mark.smoke
+    @pytest.mark.parametrize('params, count_brewery', [('query=dog', 39), ('query=diego', 91)])
+    def test_get_autocomplete_with_query(self, params: str, count_brewery: int) -> None:
+        response = requests.get(Url.AUTOCOMPLETE_URL, params=params)
+        check_status_code(response, 200)
+        response_json = validate_json(response)
+        query_list = GetResponseListAutocompleteModel(__root__=response_json)
+        assert (len(query_list.__root__)) == count_brewery

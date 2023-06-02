@@ -23,3 +23,12 @@ class GetResponseBreweryModel(BaseModel):
 
 class GetResponseListBreweryModel(BaseModel):
     __root__: List[GetResponseBreweryModel]
+
+
+class GetResponseAutocompleteModel(BaseModel):
+    id: str
+    name: str
+
+
+class GetResponseListAutocompleteModel(BaseModel):
+    __root__: List[GetResponseAutocompleteModel]
