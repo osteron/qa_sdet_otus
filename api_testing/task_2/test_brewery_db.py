@@ -52,9 +52,9 @@ class TestBreweryApi:
         check_status_code(response, 200)
         response_json = validate_json(response)
         assert len(response_json) == count_brewery
-        for models in response_json:
-            brewery = GetResponseBreweryModel(**models)
-            assert city in brewery.city.lower()
+        models = [GetResponseBreweryModel(**model) for model in response_json]
+        for model in models:
+            assert city in model.city.lower()
 
     @pytest.mark.smoke
     @pytest.mark.parametrize('brewery_id', ['b54b16e1-ac3b-4bff-a11f-f7ae9ddc27e0'])
